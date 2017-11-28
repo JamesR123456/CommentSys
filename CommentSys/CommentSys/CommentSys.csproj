@@ -66,8 +66,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetCommentTests.cs" />
-    <Compile Include="Models\Class1.cs" />
+    <Compile Include="Models\ErrorResponse.cs" />
+    <Compile Include="TestCases\GetCommentTests.cs" />
+    <Compile Include="Models\CommentResponse.cs" />
     <Compile Include="Requests\CommentSystemRequests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

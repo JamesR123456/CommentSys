@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 using Newtonsoft.Json;
+using Models;
 
 namespace CommentSys.Requests
 {
@@ -32,7 +33,7 @@ namespace CommentSys.Requests
         /// Gets all comments or a comment of a specific ID.
         /// </summary>
         /// <returns></returns>
-        public IRestResponse GetComment(string commentId = null)
+        public IRestResponse<CommentResponse> GetComment(string commentId = null)
         {
             var  request = string.IsNullOrEmpty(commentId) ? new RestRequest($"/v1/comments/", Method.GET) 
                 : new RestRequest($"/v1/comments/{commentId}", Method.GET);
@@ -40,8 +41,7 @@ namespace CommentSys.Requests
             request.AddHeader("Authorization", $"Bearer {bearerToken}");
             request.AddHeader("X-OrganizationId", xOrgid);
 
-            var result = client.Execute(request);
-            return result;
+            return client.Execute<CommentResponse>(request);            
         }
 
 
@@ -51,7 +51,7 @@ namespace CommentSys.Requests
         /// </summary>
         /// <param name="comment"></param>
         /// <returns></returns>
-        public IRestResponse PostComment(string thecomment)
+        public IRestResponse<CommentResponse> PostComment(string thecomment)
         {
             var request = new RestRequest($"/v1/comments/", Method.POST);
             request.AddHeader("Authorization", $"Bearer {bearerToken}");
@@ -61,7 +61,7 @@ namespace CommentSys.Requests
 
             var serialised = JsonConvert.SerializeObject(body);
             request.AddBody(serialised);
-            var result = client.Execute(request);
+            var result = client.Execute<CommentResponse>(request);
             return result;
         }
 

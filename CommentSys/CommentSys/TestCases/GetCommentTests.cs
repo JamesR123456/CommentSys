@@ -1,4 +1,5 @@
 ﻿using CommentSys.Requests;
+using NJsonSchema;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -30,5 +31,19 @@ namespace TestCases.CommentSys
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="json"></param>
+        private async void validateResponse<T>(string json)
+        {
+            var schema = await JsonSchema4.FromTypeAsync<T>();
+            var errorList = schema.Validate(json);
+            //TODO: Better formatting for errors to make more readable.
+            Assert.IsTrue(errorList.Count == 0, $"Schema validation errors" +
+                $"generated {errorList.ToString()}");
+
+        }
     }
 }
