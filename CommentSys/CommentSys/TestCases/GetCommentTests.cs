@@ -1,4 +1,6 @@
 ﻿using CommentSys.Requests;
+using Models;
+using Newtonsoft.Json;
 using NJsonSchema;
 using NUnit.Framework;
 using System;
@@ -22,17 +24,29 @@ namespace TestCases.CommentSys
             comments = new CommentSystemRequests();    
         }
 
-        [Test]
-        public void GetComment_PositiveFlow()
+        [TestCase("test comment",Description ="Add comment and then reteive same comment.")]
+        public void GetComment_PositiveFlow(string comment)
         {
-            comments.PostComment("test comment");
+            var postResult = comments.PostComment(comment);
+            Assert.AreEqual(HttpStatusCode.OK, postResult.StatusCode, "");
+            validateResponse<CommentResponse>(JsonConvert.SerializeObject(postResult.Data));
+            
             //TODO: Last request/response stored via framework.
-            var response = comments.GetComment();
+            var response = comments.GetComment(postResult.Data.id.commentId);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "");
+            //TODO:Remove serialization of object, double conversion is inefficient.
+            validateResponse<CommentResponse>(JsonConvert.SerializeObject(response.Data));
+            Assert.AreEqual(postResult.Data.id.commentId, response.Data.id.commentId, "Comment id retreived is not comment expected.");
+        }
+
+        [Test]
+        public void PostComment_Positive()
+        {
+
         }
 
         /// <summary>
-        /// 
+        /// TODO: Refactor out in generic assertion class for common assertions.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
