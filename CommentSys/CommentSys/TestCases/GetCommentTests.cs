@@ -13,6 +13,9 @@ namespace TestCases.CommentSys
         //TODO: Autofac for context injection.
         private CommentSystemRequests comments;
 
+        /// <summary>
+        /// Generates instance of REST client for the service
+        /// </summary>
         [SetUp]
         public void Setup()
         {
@@ -43,14 +46,14 @@ namespace TestCases.CommentSys
             //TODO: Find out expect code value, message etc.
         }
 
-        [Test]
+        [Test(Description ="Generates a bad request for GET Comments")]
         public void GetComment_BadRequest()
         {
-            var response = comments.GetComment("%");
+            var response = comments.GetComment("%");//TODO: Find better way to trigger bad request.
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Unexpected response code.");
         }
         
-        [Test]
+        [Test(Description ="Geneates an internal server response from GET comments.")]
         public void GetComment_InternalServerError()
         {
             Assert.Inconclusive("Not Implemented");
