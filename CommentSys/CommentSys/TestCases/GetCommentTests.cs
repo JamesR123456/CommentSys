@@ -3,12 +3,7 @@ using Models;
 using Newtonsoft.Json;
 using NJsonSchema;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestCases.CommentSys
 {
@@ -33,16 +28,34 @@ namespace TestCases.CommentSys
             
             //TODO: Last request/response stored via framework.
             var response = comments.GetComment(postResult.Data.id.commentId);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Unexpected response code.");
             //TODO:Remove serialization of object, double conversion is inefficient.
             validateResponse<CommentResponse>(JsonConvert.SerializeObject(response.Data));
             Assert.AreEqual(postResult.Data.id.commentId, response.Data.id.commentId, "Comment id retreived is not comment expected.");
         }
 
+        [Test(Description = "Negative flow for record not found.")]
+        public void GetComment_NotFound()
+        {
+            //TODO: check that this id is not possbile.
+            var response = comments.GetComment("NotExistant");
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, "Unexpected response code.");
+            //TODO: Find out expect code value, message etc.
+        }
+
         [Test]
-        public void PostComment_Positive()
+        public void GetComment_BadRequest()
         {
 
+        }
+
+        [Test(Description = "Exception flow test for unauthencated request.")]
+        public void GetComment_Unauthenticated()
+        {
+            CommentSystemRequests.bearerToken = null;
+            var response = comments.GetComment();
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode, "Unexpected response code.");
+            //TODO: Find out expect code value, message etc.
         }
 
         /// <summary>

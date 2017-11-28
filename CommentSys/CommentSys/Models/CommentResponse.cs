@@ -1,8 +1,8 @@
-﻿
-using System;
+﻿using System;
 
 namespace Models
 {
+    //TODO: Generate model correctly from schema data
     public class CommentResponse
     {
         public string text { get; set; }

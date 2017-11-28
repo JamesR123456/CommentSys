@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommentSys.Models
+﻿namespace CommentSys.Models
 {
-
     public class ErrorResponse
     {
         public string code { get; set; }
@@ -14,5 +7,4 @@ namespace CommentSys.Models
         public string subCode { get; set; }
         public string subMessage { get; set; }
     }
-
 }
