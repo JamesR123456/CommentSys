@@ -46,7 +46,15 @@ namespace TestCases.CommentSys
         [Test]
         public void GetComment_BadRequest()
         {
-
+            var response = comments.GetComment("%");
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, "Unexpected response code.");
+        }
+        
+        [Test]
+        public void GetComment_InternalServerError()
+        {
+            Assert.Inconclusive("Not Implemented");
+            //TODO: How to generate an internal server error?
         }
 
         [Test(Description = "Exception flow test for unauthencated request.")]
